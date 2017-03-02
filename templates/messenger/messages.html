@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  Повідомлення
+{% endblock title %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/profile-style.css' %}">
+  
+{% endblock head %}
+   
+{% block body %}
+
+<ul class="nav nav-tabs">
+  <li role="presentation" class="active"><a href="#">Вхідні</a></li>
+  <li role="presentation"><a href="#">Вихідні</a></li>
+</ul>
+
+<div class="messages-block">
+ 
+  {% for m in messages %}
+  <div class="message">
+   
+    <a href="{% url 'profile' username=m.from_user.username %}">
+    <img src="{{ m.from_user.profile.get_picture }}">
+     {{ m.from_user.get_full_name }}
+    </a>  
+    <div class="message-time">{{ m.date }}</div>
+    <div class="message-text">
+     <a href="/123">
+      {{ m.text }}
+     </a>
+    </div><hr class="with-clear">
+    
+  </div>
+  {% empty %}
+  <h4>Повідомлень поки немає.</h4>
+  {% endfor %}
+</div>
+
+{% endblock body %}

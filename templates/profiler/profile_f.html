@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+  
+{% block title %} 
+  {{ profile_user.get_full_name }}
+{% endblock %}
+  
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/profile-style.css' %}">
+{% endblock head %}
+   
+{% block body %}
+   <div class="profile-info">
+    <div class="profile-avatar">
+      <img src="{{ profile_user.profile.get_picture }}">      
+    </div>
+    <div class="profile-name">
+      {{ profile_user.get_full_name }}
+        {% if profile_user.profile.is_expanded  %}
+          <span class="glyphicon glyphicon-ok profile-is-exp" aria-hidden="true"></span>
+        {% endif %}
+      <div class="profile-online">
+        {% if profile_user.profile.is_online  %}
+          online
+        {% endif %}
+      </div>
+    </div>
+    <div class="profile-status">
+      {% if profile_user.profile.status  %}
+      {{ profile_user.profile.status }}
+      {% endif %}
+      <hr>
+    </div>
+    <div class="profile-data">
+      {% if profile_user.profile.location %}
+      <div class="profile-data-label">Місто:</div>
+      <div class="profile-data-text">{{ profile_user.profile.location }}</div><br>
+      {% endif %}
+      {% if profile_user.profile.school %}
+      <div class="profile-data-label">Навчальний заклад:</div>
+      <div class="profile-data-text">{{ profile_user.profile.school }}</div><br>
+      {% endif %}
+      {% if profile_user.profile.form %}
+      <div class="profile-data-label">Клас:</div>
+      <div class="profile-data-text">{{ profile_user.profile.form }}</div>
+      {% endif %}
+    </div>
+    <div class="profile-awards">
+
+    </div>
+    <div class="profile-buttons">
+        <form action="{% url 'send_message' %}" method="post" style="float: left; margin-right: 5px;">
+               {% csrf_token %}
+          <input type="hidden" name="to_user" value="{{ profile_user.username }}">
+          <button type="submit" class="btn btn-info btn-sm btn-send">
+          <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Повідомлення
+          </button>
+      </form>          
+      <form action="{% url 'remove_friend' %}" method="post">
+             {% csrf_token %}
+        <input type="hidden" name="to_user" value="{{ profile_user.username }}">
+        <button type="submit" class="btn btn-danger btn-sm btn-del-fr">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>      </button>
+      </form>
+    </div>
+
+  </div>  
+  <div class="profile-wall-sections">
+    <ul class="nav nav-tabs nav-justified">
+      <li role="presentation" class="active"><a href="#">Стіна</a></li>
+<!--      <li role="presentation"><a href="#">Інформація</a></li>-->
+      <li role="presentation"><a href="#">Друзі</a></li>
+      <li role="presentation"><a href="#">Спільноти</a></li>
+      <li role="presentation"><a href="#">Нагороди</a></li>
+    </ul>
+  </div>
+    
+  <div class="profile-wall">
+   <div class="profile-wallpost-form">
+
+      <form action="{% url 'add_wallpost' username=profile_user.username %}" method="post">
+       {% csrf_token %}
+        <textarea class="form-control" rows="2" placeholder="Додати запис..." name="wall_post_text"></textarea>
+        <button type="submit" class="btn btn-primary send-btn">
+         <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Надіслати</button>
+      </form>
+    </div>
+    
+    <div class="profile-wall-posts-block">
+     {% if profile_wallposts %}
+      {% for post in profile_wallposts %}
+        {% include 'core/wall_post.html' with post=post %}
+      {% endfor %}
+      {% else %}
+      <div class="profile-no-wallposts text-center">
+        <img src="{% static 'img/no_posts.png' %}" alt="">
+        <h5>Наразі на стіні немає жодного запису.</h5>
+      </div>
+      {% endif %}
+      
+      
+    </div>
+  </div>
+  {% endblock body %}
