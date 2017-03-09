@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from profiler.views import *
+from messenger.views import *
 
 
 urlpatterns = [
@@ -14,7 +15,7 @@ urlpatterns = [
     url(r'^a/reject_friend_request/$', action_reject_friend_request, name='reject_friend_request'),
     url(r'^a/delete_wall_post/(?P<username>[^/]+)/(?P<p_id>\d+)/$', action_delete_wall_post, name='delete_wall_post'),
     url(r'^a/remove_friend/$', action_remove_friend, name='remove_friend'),
-    url(r'^a/send_message/$', action_send_message, name='send_message'),
+    url(r'^a/send_message/$', send_message, name='send_message'),
 
     url(r'^settings/$', settings_profile, name='settings_profile'),
     url(r'^settings/picture/$', settings_picture, name='settings_picture'),

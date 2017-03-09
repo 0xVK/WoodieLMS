@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.shortcuts import reverse
 
 
 class MessageManager(models.Manager):
@@ -22,8 +23,11 @@ class Message(models.Model):
     objects = MessageManager()
 
     class Meta:
-        ordering = ('date',)
+        ordering = ('-date',)
         db_table = 'user_messages'
 
     def __str__(self):
         return '{} -> {} - {}'.format(self.from_user.get_full_name(), self.to_user.get_full_name(), self.text[:100])
+
+    def get_absolute_url(self):
+        return reverse('show_message', args=[self.id])
