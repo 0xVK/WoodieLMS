@@ -7,7 +7,11 @@
   
 {% block head %}
 {% endblock head %}
-   
+
+{% block javascript %}
+ <script src="{% static 'js/messages.js' %}"></script>
+{% endblock javascript %}
+
 {% block body %}
 <div class="row">
   <div class="col-md-8">
@@ -21,10 +25,10 @@
          </div>
         </a>
          <div class="friend-btns-block">
-           <form action="{% url 'send_message' %}" method="post" style="float: left; margin-right: 5px;">
+           <form action="{% url 'send_message' %}" method="post" style="float: left; margin-right: 5px;" id="send-message-fm">
              {% csrf_token %}
              <input type="hidden" name="to_user" value="{{ friend.username }}">
-             <button type="submit" class="btn btn-info btn-sm">
+             <button type="button" class="btn btn-info btn-sm">
              <span class="glyphicon glyphicon-send" aria-hidden="true"></span> Повідомлення
              </button>
            </form>          

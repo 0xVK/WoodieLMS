@@ -95,16 +95,48 @@
   margin-left: 75px;
   min-height: 60px;
   word-break: break-all;
+  display: block;
+  color: gray;
 }
 .message-text > a{
  color:  #404040;
 }
 .message:hover{
-  background-color:  #f2f2f2;
+  background-color:  #F3F1F1;
 }
 .messages-block{
   margin-top: 20px;
 }
-.message-no-read{
-  background-color: #d9d9d9;
+.message-unread{
+  background-color: #F8F7F7;
+  border-radius: 8px;
+}
+.gray-and-right{
+  color: #939393;
+  float: right;
+  font-size: 14px;
+  margin-right: 5px;
+}
+.message-btns{
+  margin:  15px 10px;
+}
+.btn-history{
+  float: right;
+}
+.btn-send-m{
+  margin: 10px;
+}
+.message-input{
+  width: 98%;
+  margin:  0 auto;
+}
+.messages-history > a > img{
+  height: 80px;
+  max-width: 70px;
+  border-radius: 8px;
+  float: left;
+  margin-right: 10px;
+}
+.loading-gif{
+  display: none;
 }

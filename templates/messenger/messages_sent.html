@@ -24,8 +24,8 @@
   {% endif %}
 
 <ul class="nav nav-tabs">
-  <li role="presentation" class="active"><a href="{% url 'my_messages' %}">Вхідні</a></li>
-  <li role="presentation"><a href="/messages/?show=outbox">Вихідні</a></li>
+  <li role="presentation" ><a href="{% url 'my_messages' %}">Вхідні</a></li>
+  <li role="presentation" class="active"><a href="#">Вихідні</a></li>
 </ul>
 
 <div class="messages-block">
@@ -34,8 +34,8 @@
   <div class="message {% if not m.is_read %}message-unread{% endif %}">
    
     <a href="{% url 'profile' username=m.from_user.username %}">
-    <img src="{{ m.from_user.profile.get_picture }}">
-     {{ m.from_user.get_full_name }}
+    <img src="{{ m.to_user.profile.get_picture }}">
+     {{ m.to_user.get_full_name }}
     </a>  
     <div class="message-time"> ({{ m.date }})</div>
     <div>
