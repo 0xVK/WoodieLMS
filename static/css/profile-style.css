@@ -140,3 +140,10 @@
 .loading-gif{
   display: none;
 }
+.profile-status:hover{
+  cursor: pointer;
+}
+.status-input{
+  width: 380px;
+  display: inline;
+}

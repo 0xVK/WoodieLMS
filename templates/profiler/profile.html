@@ -11,6 +11,7 @@
 
 {% block javascript %}
  <script src="{% static 'js/messages.js' %}"></script>
+ <script src="{% static 'js/profiler.js' %}"></script>
 {% endblock javascript %}
 
 {% block body %}
@@ -29,12 +30,20 @@
         {% endif %}
       </div>
     </div>
+    {% if is_user_profile %}
     <div class="profile-status">
-     {% if profile_user.profile.status %}
-      {{ profile_user.profile.status }}
-     {% endif %}
-      <hr>
+        {% if profile_user.profile.status %}
+         {{ profile_user.profile.status }}
+        {% else %}
+          Змінити статус
+        {% endif %}
     </div>
+    {% else %}
+        {% if profile_user.profile.status %}
+          {{ profile_user.profile.status }}
+        {% endif %}
+    {% endif %}
+    <hr>
     <div class="profile-data">
       {% if profile_user.profile.location %}
       <div class="profile-data-label">Місто:</div>
@@ -212,5 +221,12 @@ List of awards
     </div>
   </div>
 </div>
- 
+
+<div style="display:none;">
+  <form action="" class="status-form form-inline">
+    <input type="text" class="form-control status-input">
+    <button type="button" class="btn btn-default btn-change-status">Ок</button>
+  </form>
+</div>
+  
 {% endblock body %}
