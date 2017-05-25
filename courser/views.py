@@ -689,3 +689,65 @@ def action_delete_course(request, c_id, cr_id):
     else:
         return HttpResponseForbidden('Помилковий запит.')
 
+
+@login_required()
+def review_independent_work(request, c_id, cr_id, s_id):
+
+    c = get_object_or_404(Community, id=c_id)
+    this_course = get_object_or_404(Course, id=cr_id, community=c)
+    this_step = get_object_or_404(CourseStep, id=s_id, course=this_course)
+    answers = AnswerFile.objects.filter(independent_work=this_step.independentwork)
+
+    if not request.user == this_course.author:
+        return HttpResponseForbidden('Перегляди прислані файли може тільки власник курсу!')
+
+    data = {
+        'com': c,
+        'step': this_step,
+        'course': this_course,
+        'answers': answers,
+    }
+
+    return render(request, 'courser/review_independent_work.html', data)
+
+
+@login_required()
+def review_answer(request, a_id):
+
+    answer = AnswerFile.objects.get(id=a_id)
+    this_step = answer.independent_work.course_step
+    this_course = this_step.course
+    c = this_course.community
+
+    if not answer.user == request.user and not this_step.course.author == request.user:
+        return HttpResponseForbidden('Ви не маєте доступу до цієї сторінки')
+
+    if request.method == 'GET':
+        data = {
+            'answer': answer,
+            'com': c,
+            'course': this_course,
+            'step': this_step,
+        }
+
+        return render(request, 'courser/review_answer.html', data)
+
+    if request.method == 'POST':
+
+        if request.POST.get('rez-btn') == 'sub':
+
+            if request.POST.get('comment-rev'):
+                answer.comment = request.POST.get('comment-rev')
+            answer.status = AnswerFile.CHECKED
+            answer.save()
+            messages.success(request, 'Робота {} зарахована.'.format(answer.user.get_full_name()))
+
+        if request.POST['rez-btn'] == 'rew':
+
+            if request.POST.get('comment-rev'):
+                answer.comment = request.POST.get('comment-rev')
+            answer.status = AnswerFile.TO_REVISION
+            answer.save()
+            messages.success(request, 'Робота {} відправлена на доопрацювання'.format(answer.user.get_full_name()))
+
+        return redirect(reverse('review_independent_work', args=[c.id, this_course.id, this_step.id]))

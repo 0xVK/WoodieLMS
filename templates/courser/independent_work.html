@@ -19,8 +19,12 @@
 </ol>
 
 {% if user == course.author %}
-<a class="btn btn-warning" href="{% url 'edit_step' c_id=com.id cr_id=course.id s_id=step.id %}" role="button" style="float:right; margin-bottom:5px;">
-Редагувати</a>
+<div class="indep-control-btns">
+    <a class="btn btn-warning" href="{% url 'edit_step' c_id=com.id cr_id=course.id s_id=step.id %}" role="button" style="float:right; margin-bottom:5px; margin-left: 5px;"> <span class="glyphicon glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span>
+    Редагувати</a>
+    <a class="btn btn-info btn-review-uploads" href="{% url 'review_independent_work' c_id=com.id cr_id=course.id s_id=step.id %}" role="button" style="float:right; margin-bottom:5px;"> <span class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+    Переглянути надісланні розв'язки</a>
+</div>
 {% endif %}
  
  {% if messages %}
@@ -44,9 +48,26 @@
   </div>
 </div>
 
-
  
  <hr>
+ {% if answer_file.status == 'C' %}
+     <div class="alert alert-success" role="alert">
+         Робота зарахована!
+     {% if answer_file.comment %} <br><hr>
+      <b>Коментар вчителя:</b> {{ answer_file.comment }}
+     {% endif %}
+     </div>
+ {% endif %}
+ 
+  {% if answer_file.status == 'R' %}
+     <div class="alert alert-danger" role="alert">
+         Робота відправлена на доопрацювання.
+     {% if answer_file.comment %} <br><hr>
+      <b>Коментар вчителя:</b> {{ answer_file.comment }}
+     {% endif %}
+     </div>
+ {% endif %}
+ 
  <h5>Ваша відповідь (архів до 30Mb):</h5>
  <div class="file-block">
  {% if not is_uploaded %}

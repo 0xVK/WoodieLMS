@@ -111,6 +111,7 @@ def send_message(request):
     if Friendship.objects.are_friends(to_user, request.user) and text:
         Message(to_user=to_user, from_user=request.user, text=text).save()
 
+    messages.success(request, 'Повідомлення успішно надіслано!')
     return redirect(reverse('profile', args=[to_username]))
 
 

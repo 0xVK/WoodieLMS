@@ -40,8 +40,8 @@ class Profile(models.Model):
         return self.communities.all()
 
     def get_picture(self):
-        no_picture = 'http://kuwipic.pythonanywhere.com/media/4fxY.jpg'
-        # no_picture = 'http://kuwipic.pythonanywhere.com/media/ROIw.jpg'
+        no_picture = 'http://i.imgur.com/CyZ1Gh3.png'
+
         try:
             filename = settings.MEDIA_ROOT + '/profile_pictures/' + self.user.username + '.jpg'
             picture_url = settings.MEDIA_URL + 'profile_pictures/' + self.user.username + '.jpg'

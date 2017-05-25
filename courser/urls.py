@@ -14,6 +14,8 @@ urlpatterns = [
         name='create_independent_work'),
 
     url(r'^c/(?P<c_id>\d+)/courses/(?P<cr_id>\d+)/(?P<s_id>\d+)/$', courser_views.course_step, name='course_step'),
+    url(r'^c/(?P<c_id>\d+)/courses/(?P<cr_id>\d+)/(?P<s_id>\d+)/review/$', courser_views.review_independent_work,
+        name='review_independent_work'),
     url(r'^c/(?P<c_id>\d+)/courses/(?P<cr_id>\d+)/(?P<s_id>\d+)/edit/$', courser_views.step_edit, name='edit_step'),
 
     url(r'^c/(?P<c_id>\d+)/courses/(?P<cr_id>\d+)/(?P<s_id>\d+)/write_dictation/$', courser_views.write_dictation,
@@ -35,4 +37,5 @@ urlpatterns = [
         name='course_step_delete'),
     url(r'^c/(?P<c_id>\d+)/courses/(?P<cr_id>\d+)/delete/$', courser_views.action_delete_course,
         name='course_delete'),
+    url(r'^answer/(?P<a_id>\d+)/$', courser_views.review_answer, name='review_answer'),
 ]

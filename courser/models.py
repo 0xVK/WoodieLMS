@@ -6,6 +6,7 @@ import os
 from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch import receiver
 from django.db.models import F
+import datetime
 
 
 class Course(models.Model):
@@ -103,9 +104,22 @@ class IndependentWork(models. Model):
 
 class AnswerFile(models.Model):
 
+    CHECKED = 'C'  # перевірено
+    TO_REVISION = 'R'  # відправлено на доопрацювання
+    WAIT = 'W'  # очікує перевірки
+
+    STATUS_TYPES = (
+        (CHECKED, 'Перевірено'),
+        (TO_REVISION, 'Відправлено на доопрацювання'),
+        (WAIT, 'Очікує перевірки'),
+    )
+
     independent_work = models.ForeignKey(IndependentWork)
     user = models.ForeignKey(User)
     file = models.FileField(upload_to='answers')
+    date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(choices=STATUS_TYPES, default=WAIT, max_length=3)
+    comment = models.TextField(max_length=500, blank=True, null=True)
 
     def __str__(self):
         return 'Відповідь до: {}, завантажив: ({})'.format(self.independent_work.course_step.name,
